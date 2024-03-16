@@ -1,0 +1,21 @@
+.animated-picture {
+  position: relative;
+  animation: bounce 0.5s ease infinite; /* Adjust the animation duration and timing */
+}
+
+.animated-picture.moving {
+  transform: translateX(-100px); /* Move the picture to the left by 100px */
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1); /* Adjust the scale factor for the bounce effect */
+  }
+}
+
+.aiTextPicture {
+  position: relative;
+}
