@@ -19,3 +19,54 @@
 .aiTextPicture {
   position: relative;
 }
+
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.title {
+  font-size: 24px;
+  color: #333;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.transcript {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.thinking {
+  font-style: italic;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.animated-picture-container {
+  margin-top: 50px;
+}
+
+.animated-picture {
+  width: 200px;
+}
+
+.aiText {
+  margin-top: 20px;
+  font-size: 18px;
+}

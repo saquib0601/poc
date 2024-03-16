@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import speechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-import giphy from './assets/giphy.gif'
 import AI from './assets/AI.jpg'
 import './App.css'
 
@@ -9,7 +8,7 @@ function App() {
 
   const [thinking, setThinking] = useState(false);
   const [aiText, setAiText] = useState("");
-  const { listening, transcript } = useSpeechRecognition();
+  const { listening, transcript, resetTranscript } = useSpeechRecognition();
 
   async function processSpeech(transcript) {
     setThinking(true);
@@ -30,7 +29,6 @@ function App() {
         response = "I didn't get you"
       }
     }
-    // setResponse(response);
     setThinking(false);
     return response;
   }
@@ -43,24 +41,27 @@ function App() {
         const utterance = new SpeechSynthesisUtterance(response);
         speechSynthesis.speak(utterance);
         setAiText(response);
+        resetTranscript();
+        setTimeout(() => {
+          setAiText("");
+        }, 2000);
       });
     }
   }, [transcript, listening]);
   
 
   return (
-    <div>
-      <p>{listening ? "Go ahead, I'm listening" : "Click the button and ask anything"}</p>
-      <button onClick={() => speechRecognition.startListening()}>
+    <div className="container">
+      <h1 className="title">{listening ? "Go ahead, I'm listening" : "Click the button and ask anything"}</h1>
+      <button className="button" onClick={() => speechRecognition.startListening()}>
         Ask me anything
       </button>
-      {transcript && <div>{transcript}</div>}
-      {thinking && <div>...Thinking</div>}
-        <div style={{display: 'block', paddingLeft: '600px', paddingTop: '1px'}} className="animated-picture-container">
-          <img src={AI} alt="Animated" 
-          className={aiText ? 'animated-picture' : 'aiTextPicture'} />
-        </div>
-      {aiText && <div style={{paddingLeft: '610px'}}>{aiText}</div>}
+      {transcript && <div className="transcript">{transcript}</div>}
+      {thinking && <div className="thinking">...Thinking</div>}
+      <div className="animated-picture-container">
+        <img src={AI} alt="Animated" className={aiText ? 'animated-picture' : 'aiTextPicture'} />
+      </div>
+      {aiText && <div className="aiText">{aiText}</div>}
     </div>
   );
 }
