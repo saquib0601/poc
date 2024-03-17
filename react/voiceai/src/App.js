@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import speechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-import AI from './assets/AI.jpg'
+// import AI from './assets/AI.jpg'
+// import video from './assets/video.mp4'
+import video from './assets/videoo.mov'
 import './App.css'
 
 function App() {
@@ -9,11 +11,14 @@ function App() {
   const [thinking, setThinking] = useState(false);
   const [aiText, setAiText] = useState("");
   const { listening, transcript, resetTranscript } = useSpeechRecognition();
+  const utteranceRef = React.useRef(null);
+  const videoRef = React.useRef(null);
+  const [caption, setCaption] = useState("");
 
   async function processSpeech(transcript) {
     setThinking(true);
     const responses = {
-      "hello": "Hi",
+      "hello": "listening, transcript, resetTranscript listening, transcript, resetTranscript listening, transcript, resetTranscript listening, transcript, resetTranscript",
       "shakib": "Sadique",
       "bye": "Goodbye",
       "How are you": "I am good",
@@ -39,16 +44,41 @@ function App() {
       processSpeech(transcript).then(response => {
         const speechSynthesis = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(response);
+        utteranceRef.current = utterance; // Store the utterance reference
+
+        utterance.onstart = () => {
+          setCaption("Speaking...");
+        };
+        utterance.onend = () => {
+          videoRef.current.pause();
+          setCaption("");
+        };
+        
         speechSynthesis.speak(utterance);
         setAiText(response);
         resetTranscript();
-        setTimeout(() => {
-          setAiText("");
-        }, 2000);
+        // setTimeout(() => {
+        //   setAiText("");
+        // }, 2000);
       });
     }
   }, [transcript, listening]);
-  
+
+
+  useEffect(() => {
+    if (aiText) {
+      // Start playing the video
+      videoRef.current.play();
+
+      // Stop the video after 5 seconds
+      // const timeout = setTimeout(() => {
+      //   videoRef.current.pause();
+      // }, 5000);
+      // console.log(aiText, "line 64")
+      // return () => clearTimeout(timeout);
+    }
+  }, [aiText]);
+
 
   return (
     <div className="container">
@@ -59,9 +89,12 @@ function App() {
       {transcript && <div className="transcript">{transcript}</div>}
       {thinking && <div className="thinking">...Thinking</div>}
       <div className="animated-picture-container">
-        <img src={AI} alt="Animated" className={aiText ? 'animated-picture' : 'aiTextPicture'} />
+        {/* <img src={AI} alt="Animated" className={aiText ? 'animated-picture' : 'aiTextPicture'} /> */}
+        {/* <video style={{height: 'auto', width: '250px'}} loop ref={videoRef} src={video} /> */}
+        <video loop ref={videoRef} src={video} />
+        {caption && <div className="caption">{caption}</div>}
       </div>
-      {aiText && <div className="aiText">{aiText}</div>}
+      {/* {aiText && <div className="aiText">{aiText}</div>} */}
     </div>
   );
 }
