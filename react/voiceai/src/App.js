@@ -52,6 +52,7 @@ function App() {
         utterance.onend = () => {
           videoRef.current.pause();
           setCaption("");
+          setAiText("");
         };
         
         speechSynthesis.speak(utterance);
